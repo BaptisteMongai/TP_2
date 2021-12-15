@@ -33,12 +33,15 @@ namespace TP_2
 
             if (encryptionmethod == "Caesar")
             {
-                
                 OutputTextBox.Text = Caesar.Code(inputText, toDecrypt, inputKey);
             }
             if (encryptionmethod == "Binary")
             {
                 OutputTextBox.Text = Binary.Code(inputText, toDecrypt);
+            }
+            if (encryptionmethod == "Hexadecimal")
+            {
+                OutputTextBox.Text = Hexadecimal.Code(inputText, toDecrypt);
             }
         }
     }
@@ -127,8 +130,8 @@ namespace TP_2
             }
             catch (FormatException e)
             {
-                return $"{e.Message}";
-            }
+                MessageBox.Show($"Warning: {e.Message}");
+                return null;            }
         }
 
         private static string Decrypt(string inputText)
@@ -140,8 +143,8 @@ namespace TP_2
             }
             catch (FormatException e)
             {
-                return $"{e.Message}";
-            }
+                MessageBox.Show($"Warning: {e.Message}");
+                return null;            }
         }
     }
     
@@ -163,20 +166,21 @@ namespace TP_2
             }
             catch (FormatException e)
             {
-                return $"{e.Message}";
-            }
+                MessageBox.Show($"Warning: {e.Message}");
+                return null;            }
         }
 
         private static string Decrypt(string inputText)
         {
             try
             {
-                string base10Text = Convert.ToInt32(inputText, 2).ToString();
+                string base10Text = Convert.ToInt32(inputText, 16).ToString();
                 return $"{base10Text}";
             }
             catch (FormatException e)
             {
-                return $"{e.Message}";
+                MessageBox.Show($"Warning: {e.Message}");
+                return null;
             }
         }
     }
