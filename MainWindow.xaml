@@ -5,8 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TP_2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="DeCode App" Height="370" Width="540" ResizeMode="NoResize">
     <Grid>
-        
+        <StackPanel>
+            <Label Content="(De)Code" HorizontalAlignment="Center" FontSize="32" />
+            <Grid Height="220" Margin="12,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="250"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBox Name="InputTextBox" Text="Input" Grid.Column="0" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+                <TextBox Name="OutputTextBox" Text="Output" Grid.Column="1" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+            </Grid>
+            
+            <Grid Height="35" Margin="0,15,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+                
+                <ComboBox Name="EncryptionComboBox" Height="25" Width="100" HorizontalAlignment="Center" Grid.Column="0" SelectedIndex="0">
+                    <ComboBoxItem Content="Caesar"/>
+                    <ComboBoxItem Content="Binary"/> 
+                    <ComboBoxItem Content="Hexadecimal"/> 
+                    <ComboBoxItem Content="Vigenere"/> 
+                </ComboBox> 
+                <TextBox Name="KeyTextBox" Text="Key" Height="25" Grid.Column="1" TextWrapping="Wrap" AcceptsReturn="False" VerticalScrollBarVisibility="Auto"/>
+                <CheckBox Name="ConvertCheckBox" Content="Decrypt the code" Grid.Column="2" Height="25" HorizontalAlignment="Center" Margin="5,10"/>
+                <Button Click="Button_Click" Content="(De)code text !!!" Grid.Column="3" Height="25" Width="150" HorizontalAlignment="Center"/>
+            </Grid>
+        </StackPanel>
     </Grid>
 </Window>
+
