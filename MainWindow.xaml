@@ -27,7 +27,7 @@
                     <ColumnDefinition Width="150"/>
                 </Grid.ColumnDefinitions>
                 
-                <ComboBox Name="EncryptionComboBox" Height="25" Width="100" HorizontalAlignment="Center" Grid.Column="0" SelectedIndex="0">
+                <ComboBox Name="EncryptionComboBox" Height="25" Width="100" HorizontalAlignment="Center" Grid.Column="0" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged" DropDownClosed="ComboBox_DropDownClosed">>
                     <ComboBoxItem Content="Caesar"/>
                     <ComboBoxItem Content="Binary"/> 
                     <ComboBoxItem Content="Hexadecimal"/> 

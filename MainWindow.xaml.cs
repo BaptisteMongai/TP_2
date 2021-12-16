@@ -2,7 +2,7 @@
 using System.IO.Packaging;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Linq;
 namespace TP_2
 {
     
@@ -49,29 +49,36 @@ namespace TP_2
                 OutputTextBox.Text = Vigenere.Code(inputText, toDecrypt, inputKey);
             }
         }
-        /*
-        private void EncryptionComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            string text = EncryptionComboBox.Text;            //var encryptionmethod = EncryptionComboBox.Text;
-            if (text == "Caesar")
-            {
-                KeyTextBox.Visibility = Visibility.Visible;
-            }
-            else if (text == "Binary")
-            {
-                KeyTextBox.Visibility = Visibility.Hidden;
-            }
-            else if (text == "Hexadecimal")
-            {
-                KeyTextBox.Visibility = Visibility.Hidden;
-            }
-            else if (text == "Vigenere")
-            {
-                KeyTextBox.Visibility = Visibility.Visible;
-            }
-
-            return;
+        
+        //https://stackoverflow.com/questions/16966264/what-event-handler-to-use-for-combobox-item-selected-selected-item-not-necessar
+        private bool handle = true;
+        private void ComboBox_DropDownClosed(object sender, EventArgs e) {
+            if(handle)Handle();
+            handle = true;
         }
-        */
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            ComboBox cmb = sender as ComboBox;
+            handle = !cmb.IsDropDownOpen;
+            Handle();
+        }
+
+        private void Handle() {
+            switch (EncryptionComboBox.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last())
+            { 
+                case "Caesar":
+                    KeyTextBox.Visibility = Visibility.Visible;
+                    break;
+                case "Binary":
+                    KeyTextBox.Visibility = Visibility.Hidden;
+                    break;
+                case "Hexadecimal":
+                    KeyTextBox.Visibility = Visibility.Hidden;
+                    break;
+                case "Vigenere":
+                    KeyTextBox.Visibility = Visibility.Visible;
+                    break;
+            }
+        }
     }
 }
