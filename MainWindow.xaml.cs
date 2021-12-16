@@ -43,6 +43,16 @@ namespace TP_2
             {
                 OutputTextBox.Text = Hexadecimal.Code(inputText, toDecrypt);
             }
+            if (encryptionmethod == "Vigenere")
+            {
+                OutputTextBox.Text = Vigenere.Code(inputText, toDecrypt, inputKey);
+            }
+        }
+        
+        private void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        {
+            Help secondWindow = new Help();
+            secondWindow.Show();
         }
     }
 
@@ -131,7 +141,8 @@ namespace TP_2
             catch (FormatException e)
             {
                 MessageBox.Show($"Warning: {e.Message}");
-                return null;            }
+                return null;
+            }
         }
 
         private static string Decrypt(string inputText)
@@ -144,7 +155,8 @@ namespace TP_2
             catch (FormatException e)
             {
                 MessageBox.Show($"Warning: {e.Message}");
-                return null;            }
+                return null;
+            }
         }
     }
     
@@ -167,7 +179,8 @@ namespace TP_2
             catch (FormatException e)
             {
                 MessageBox.Show($"Warning: {e.Message}");
-                return null;            }
+                return null;
+            }
         }
 
         private static string Decrypt(string inputText)
@@ -184,4 +197,103 @@ namespace TP_2
             }
         }
     }
+    internal static class Vigenere
+    {
+        public static string Code(string inputText, bool toDecrypt, string key)
+        {
+            // Ternary operator - Google it
+            return toDecrypt ? $"{Decrypt(inputText, key)} decrypted with Vigenere !" : $"{Encrypt(inputText, key)} encrypted with Vigenere !";
+        }
+        private static string Encrypt(string inputText, string keyAsString)
+        {
+            string encryptedText = "";
+            string lowerAlphabet = "abcdefghijklmnopqrstuvxyz";
+            string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVXYZ";
+
+            int lettersCounter = 0;
+            
+            foreach (char letter in inputText)
+            {
+                if (Char.IsUpper(letter))
+                {
+                    int keyIndex = lettersCounter % (keyAsString.Length);
+
+                    if (Char.IsUpper(keyAsString[keyIndex]))
+                    {
+                        int encryptedLetterIndex = (upperAlphabet.IndexOf(letter) + upperAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
+                        encryptedText += upperAlphabet[encryptedLetterIndex];
+                    } 
+                    else if(!Char.IsUpper(keyAsString[keyIndex]))
+                    {
+                        int encryptedLetterIndex = (upperAlphabet.IndexOf(letter) + lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
+                        encryptedText += upperAlphabet[encryptedLetterIndex];
+                    }
+                }
+                else if(!Char.IsUpper(letter))
+                {
+                    int keyIndex = lettersCounter % (keyAsString.Length);
+                    if (Char.IsUpper(keyAsString[keyIndex]))
+                    {
+                        int encryptedLetterIndex = (lowerAlphabet.IndexOf(letter) + upperAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
+                        encryptedText += lowerAlphabet[encryptedLetterIndex];
+                    }
+                    else if (!Char.IsUpper(keyAsString[keyIndex]))
+                    {
+                        int encryptedLetterIndex =
+                            (lowerAlphabet.IndexOf(letter) + lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
+                        encryptedText += lowerAlphabet[encryptedLetterIndex];
+                    }
+                }
+
+                lettersCounter++;
+            }
+            return encryptedText;
+        }
+
+        private static string Decrypt(string inputText, string keyAsString)
+        {
+            string decryptedText = "";
+            string lowerAlphabet = "abcdefghijklmnopqrstuvxyz";
+            string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVXYZ";
+
+            int lettersCounter = 0;
+            
+            foreach (char letter in inputText)
+            {
+                if (Char.IsUpper(letter))
+                {
+                    int keyIndex = lettersCounter % (keyAsString.Length);
+
+                    if (Char.IsUpper(keyAsString[keyIndex]))
+                    {
+                        int encryptedLetterIndex = (((upperAlphabet.IndexOf(letter) - upperAlphabet.IndexOf(keyAsString[keyIndex])) % 25)+25)%25;
+                        decryptedText += upperAlphabet[encryptedLetterIndex];
+                    } 
+                    else if(!Char.IsUpper(keyAsString[keyIndex]))
+                    {
+                        int encryptedLetterIndex = (((upperAlphabet.IndexOf(letter) - lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 25)+25)%25;
+                        decryptedText += upperAlphabet[encryptedLetterIndex];
+                    }
+                }
+                else if(!Char.IsUpper(letter))
+                {
+                    int keyIndex = lettersCounter % (keyAsString.Length);
+                    if (Char.IsUpper(keyAsString[keyIndex]))
+                    {
+                        int encryptedLetterIndex = (((lowerAlphabet.IndexOf(letter) - upperAlphabet.IndexOf(keyAsString[keyIndex])) % 25)+25)%25;
+                        decryptedText += lowerAlphabet[encryptedLetterIndex];
+                    }
+                    else if (!Char.IsUpper(keyAsString[keyIndex]))
+                    {
+                        int encryptedLetterIndex = (((lowerAlphabet.IndexOf(letter) - lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 25)+25)%25;
+                        decryptedText += lowerAlphabet[encryptedLetterIndex];
+                    }
+                }
+
+                lettersCounter++;
+            }
+            return decryptedText;
+        }
+    }
+    
 }

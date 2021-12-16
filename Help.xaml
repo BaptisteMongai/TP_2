@@ -5,8 +5,65 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:TP_2"
         mc:Ignorable="d"
-        Title="Help" Height="450" Width="800">
+        Title="Help" Height="500" Width="640" ResizeMode="NoResize">
     <Grid>
-        
+        <StackPanel>
+            <Label Content="Better understand encrytions" HorizontalAlignment="Center" FontSize="22" />
+            <Grid Height="80" Margin="12,10,12,0">
+                <BulletDecorator>
+                    <BulletDecorator.Bullet>
+                        <Ellipse Height="5" Width="5" Fill="Black"/>
+                    </BulletDecorator.Bullet>
+                        <TextBlock TextWrapping="Wrap">
+                            A <Bold Foreground="Red">BINARY number</Bold> is a number expressed in the base-2 numeral system, 
+                            a method of mathematical expression which uses only two symbols: '0' and '1'.<LineBreak/>
+                            To convert a decimal number to a binary number, it is enough to make successive whole divisions by 2 until the quotient becomes zero.
+                            The result will be the reverse juxtaposition of the remains.<LineBreak/>
+                        <Underline>Example :</Underline> 57(10) = 111001(2)
+                        </TextBlock>
+                    </BulletDecorator>
+            </Grid>
+            <Grid Height="100" Margin="12,15,12,0">
+                <BulletDecorator>
+                    <BulletDecorator.Bullet>
+                        <Ellipse Height="5" Width="5" Fill="Black"/>
+                    </BulletDecorator.Bullet>
+                    <TextBlock TextWrapping="Wrap">
+                            <Run>An </Run> <Bold Foreground="Red">HEXADECIMAL number</Bold> is a number expressed in the base-16 numeral system, 
+                            hexadecimal uses 16 distinct symbols, the symbols "0"–"9" to represent values 0 to 9, and "A"–"F" (or "a"–"f") to represent values from 10 to 15.<LineBreak/>
+                            To convert a decimal number to an hexadecimal number, it is enough to make successive whole divisions by 16 until the quotient becomes zero.
+                            The result will be the reverse juxtaposition of the remains.<LineBreak/>
+                        <Underline>Example :</Underline> 2431(10) = 97F(16)
+                    </TextBlock>
+                </BulletDecorator>
+            </Grid>
+            <Grid Height="70" Margin="12,15,12,0">
+                <BulletDecorator>
+                    <BulletDecorator.Bullet>
+                        <Ellipse Height="5" Width="5" Fill="Black"/>
+                    </BulletDecorator.Bullet>
+                    <TextBlock  TextWrapping="Wrap">
+                        <Run>The</Run> <Bold Foreground="Red">CAESAR cipher</Bold> is an encryption based on an alphabetical shift.
+                        This shift is the <Italic><Bold>Key</Bold></Italic> to the Caesar cipher.<LineBreak/>
+                        To convert into Cesar code, for each letter of the message to be coded, we move through
+                        the alphabet of N letters modulo 26 (number of letters in the alphabet), N being the key. "<LineBreak/>
+                        <Underline>Example :</Underline> If Key = 3; "Caesar Cipher" -> "Fdhvdu Flskhu" 
+                    </TextBlock>
+                </BulletDecorator>
+            </Grid>
+            <Grid Height="90" Margin="12,15,12,0">
+                <BulletDecorator>
+                    <BulletDecorator.Bullet>
+                        <Ellipse Height="5" Width="5" Fill="Black"/>
+                    </BulletDecorator.Bullet>
+                    <TextBlock TextWrapping="Wrap">
+                        <Run>The </Run> <Bold Foreground="Red">VIGENERE cypher</Bold> is a method of encrypting alphabetic text by using a series of interwoven Caesar ciphers, 
+                        based on the letters of a <Italic><Bold>Keyword</Bold></Italic>. It employs a form of polyalphabetic substitution.<LineBreak/>
+                        To decrypt a text we use <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://www.apprendre-en-ligne.net/crypto/vigenere/carrevig.html">The Vinagère square</Hyperlink><LineBreak/>
+                        <Underline>Example :</Underline>
+                    </TextBlock>
+                </BulletDecorator>
+            </Grid>
+        </StackPanel>
     </Grid>
 </Window>
