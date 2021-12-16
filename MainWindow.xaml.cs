@@ -13,7 +13,14 @@ namespace TP_2
 
         private void CaesarSelected(object sender, RoutedEventArgs e)
         {
-            
+            KeyTextBox.Visibility = Visibility.Visible;
+            return;
+        }
+        
+        private void BinarySelected(object sender, RoutedEventArgs e)
+        {
+            KeyTextBox.Visibility = Visibility.Hidden;
+            return;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -215,38 +222,46 @@ namespace TP_2
             string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
             int lettersCounter = 0;
-            
             foreach (char letter in inputText)
             {
                 int encryptedLetterIndex = 0;
-                if (Char.IsUpper(letter))
+                int keyIndex = lettersCounter % (keyAsString.Length);
+                if (lowerAlphabet.Contains(Char.ToString(keyAsString[keyIndex])) || upperAlphabet.Contains(Char.ToString(keyAsString[keyIndex])))
                 {
-                    int keyIndex = lettersCounter % (keyAsString.Length);
-                    
-                    if (Char.IsUpper(keyAsString[keyIndex]))
+                    if (Char.IsUpper(letter))
                     {
-                        encryptedLetterIndex = (upperAlphabet.IndexOf(letter) + upperAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
-                        encryptedText += upperAlphabet[encryptedLetterIndex];
-                    } 
-                    else if(!Char.IsUpper(keyAsString[keyIndex]))
+                        if (Char.IsUpper(keyAsString[keyIndex]))
+                        {
+                            encryptedLetterIndex =
+                                (upperAlphabet.IndexOf(letter) + upperAlphabet.IndexOf(keyAsString[keyIndex])) % 26;
+                            encryptedText += upperAlphabet[encryptedLetterIndex];
+                        }
+                        else if (!Char.IsUpper(keyAsString[keyIndex]))
+                        {
+                            encryptedLetterIndex =
+                                (upperAlphabet.IndexOf(letter) + lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 26;
+                            encryptedText += upperAlphabet[encryptedLetterIndex];
+                        }
+                    }
+                    else if (!Char.IsUpper(letter))
                     {
-                        encryptedLetterIndex = (upperAlphabet.IndexOf(letter) + lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
-                        encryptedText += upperAlphabet[encryptedLetterIndex];
+                        if (Char.IsUpper(keyAsString[keyIndex]))
+                        {
+                            encryptedLetterIndex =
+                                (lowerAlphabet.IndexOf(letter) + upperAlphabet.IndexOf(keyAsString[keyIndex])) % 26;
+                            encryptedText += lowerAlphabet[encryptedLetterIndex];
+                        }
+                        else if (!Char.IsUpper(keyAsString[keyIndex]))
+                        {
+                            encryptedLetterIndex =
+                                (lowerAlphabet.IndexOf(letter) + lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 26;
+                            encryptedText += lowerAlphabet[encryptedLetterIndex];
+                        }
                     }
                 }
-                else if(!Char.IsUpper(letter))
+                else
                 {
-                    int keyIndex = lettersCounter % (keyAsString.Length);
-                    if (Char.IsUpper(keyAsString[keyIndex]))
-                    {
-                        encryptedLetterIndex = (lowerAlphabet.IndexOf(letter) + upperAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
-                        encryptedText += lowerAlphabet[encryptedLetterIndex];
-                    }
-                    else if (!Char.IsUpper(keyAsString[keyIndex]))
-                    {
-                        encryptedLetterIndex = (lowerAlphabet.IndexOf(letter) + lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
-                        encryptedText += lowerAlphabet[encryptedLetterIndex];
-                    }
+                    encryptedText += letter;
                 }
                 lettersCounter++;
             }
@@ -263,34 +278,50 @@ namespace TP_2
             
             foreach (char letter in inputText)
             {
-                if (Char.IsUpper(letter))
+                int encryptedLetterIndex = 0;
+                int keyIndex = lettersCounter % (keyAsString.Length);
+                
+                if (lowerAlphabet.Contains(Char.ToString(keyAsString[keyIndex])) ||
+                    upperAlphabet.Contains(Char.ToString(keyAsString[keyIndex])))
                 {
-                    int keyIndex = lettersCounter % (keyAsString.Length);
-
-                    if (Char.IsUpper(keyAsString[keyIndex]))
+                    if (Char.IsUpper(letter))
                     {
-                        int encryptedLetterIndex = (((upperAlphabet.IndexOf(letter) - upperAlphabet.IndexOf(keyAsString[keyIndex])) % 25)+25)%25;
-                        decryptedText += upperAlphabet[encryptedLetterIndex];
-                    } 
-                    else if(!Char.IsUpper(keyAsString[keyIndex]))
+                        if (Char.IsUpper(keyAsString[keyIndex]))
+                        {
+                            encryptedLetterIndex =
+                                (((upperAlphabet.IndexOf(letter) - upperAlphabet.IndexOf(keyAsString[keyIndex])) % 26) +
+                                 26) % 26;
+                            decryptedText += upperAlphabet[encryptedLetterIndex];
+                        }
+                        else if (!Char.IsUpper(keyAsString[keyIndex]))
+                        {
+                            encryptedLetterIndex =
+                                (((upperAlphabet.IndexOf(letter) - lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 26) +
+                                 26) % 26;
+                            decryptedText += upperAlphabet[encryptedLetterIndex];
+                        }
+                    }
+                    else if (!Char.IsUpper(letter))
                     {
-                        int encryptedLetterIndex = (((upperAlphabet.IndexOf(letter) - lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 25)+25)%25;
-                        decryptedText += upperAlphabet[encryptedLetterIndex];
+                        if (Char.IsUpper(keyAsString[keyIndex]))
+                        {
+                            encryptedLetterIndex =
+                                (((lowerAlphabet.IndexOf(letter) - upperAlphabet.IndexOf(keyAsString[keyIndex])) % 26) +
+                                 26) % 26;
+                            decryptedText += lowerAlphabet[encryptedLetterIndex];
+                        }
+                        else if (!Char.IsUpper(keyAsString[keyIndex]))
+                        {
+                            encryptedLetterIndex =
+                                (((lowerAlphabet.IndexOf(letter) - lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 26) +
+                                 26) % 26;
+                            decryptedText += lowerAlphabet[encryptedLetterIndex];
+                        }
                     }
                 }
-                else if(!Char.IsUpper(letter))
+                else
                 {
-                    int keyIndex = lettersCounter % (keyAsString.Length);
-                    if (Char.IsUpper(keyAsString[keyIndex]))
-                    {
-                        int encryptedLetterIndex = (((lowerAlphabet.IndexOf(letter) - upperAlphabet.IndexOf(keyAsString[keyIndex])) % 25)+25)%25;
-                        decryptedText += lowerAlphabet[encryptedLetterIndex];
-                    }
-                    else if (!Char.IsUpper(keyAsString[keyIndex]))
-                    {
-                        int encryptedLetterIndex = (((lowerAlphabet.IndexOf(letter) - lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 25)+25)%25;
-                        decryptedText += lowerAlphabet[encryptedLetterIndex];
-                    }
+                    decryptedText += letter;
                 }
                 lettersCounter++;
             }
