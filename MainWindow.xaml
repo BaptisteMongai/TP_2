@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TP_2"
         mc:Ignorable="d"
-        Title="DeCode App" Height="370" Width="540" ResizeMode="NoResize">
+        Title="DeCode App" Height="400" Width="540" ResizeMode="NoResize">
     <Grid>
         <StackPanel>
             <Label Content="(De)Code" HorizontalAlignment="Center" FontSize="32" />
@@ -19,7 +19,7 @@
                 <TextBox Name="OutputTextBox" Text="Output" Grid.Column="1" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
             </Grid>
             
-            <Grid Height="35" Margin="0,15,0,0">
+            <Grid Height="35" Margin="0,10,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150"/>
                     <ColumnDefinition Width="50"/>
@@ -37,6 +37,12 @@
                 <TextBox Name="KeyTextBox" Text="Key" Height="25" Grid.Column="1" TextWrapping="Wrap" AcceptsReturn="False" VerticalScrollBarVisibility="Auto"/>
                 <CheckBox Name="ConvertCheckBox" Content="Decrypt the code" Grid.Column="2" Height="25" HorizontalAlignment="Center" Margin="5,10"/>
                 <Button Click="Button_Click" Content="(De)code text !!!" Grid.Column="3" Height="25" Width="150" HorizontalAlignment="Center"/>
+            </Grid>
+            <Grid Height="20" Margin="12,0,12,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Click="ButtonHelp_Click" Content="Help" Height="20" Width="75" HorizontalAlignment="Center"/>
             </Grid>
         </StackPanel>
     </Grid>

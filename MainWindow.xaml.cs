@@ -80,5 +80,10 @@ namespace TP_2
                     break;
             }
         }
+        private void ButtonHelp_Click(object sender, RoutedEventArgs e)
+        {
+            Help secondWindow = new Help();
+            secondWindow.Show();
+        }
     }
 }
