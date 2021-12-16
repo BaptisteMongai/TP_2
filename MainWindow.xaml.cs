@@ -11,6 +11,11 @@ namespace TP_2
             InitializeComponent();
         }
 
+        private void CaesarSelected(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             // the "??" operator checks for nullability and value all at once.
@@ -21,6 +26,7 @@ namespace TP_2
             var encryptionmethod = EncryptionComboBox.Text;
             var inputKey = KeyTextBox.Text;
 
+            
             
             if (toDecrypt)
             {
@@ -39,16 +45,11 @@ namespace TP_2
             {
                 OutputTextBox.Text = Binary.Code(inputText, toDecrypt);
             }
-            if (encryptionmethod == "Hexadecimal")
-            {
-                OutputTextBox.Text = Hexadecimal.Code(inputText, toDecrypt);
-            }
             if (encryptionmethod == "Vigenere")
             {
                 OutputTextBox.Text = Vigenere.Code(inputText, toDecrypt, inputKey);
             }
         }
-        
         private void ButtonHelp_Click(object sender, RoutedEventArgs e)
         {
             Help secondWindow = new Help();
@@ -70,8 +71,8 @@ namespace TP_2
         {
             string encryptedText = "";
 
-            string lowerAlphabet = "abcdefghijklmnopqrstuvxyz";
-            string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVXYZ";
+            string lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
+            string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
             if (int.TryParse(keyAsString, out var intKey))
             {
@@ -81,7 +82,7 @@ namespace TP_2
                 }
                 else if (intKey < 0)
                 {
-                    intKey = intKey % 26 + 25;
+                    intKey = intKey % 26 + 26;
                 }
                 else
                 {
@@ -90,26 +91,37 @@ namespace TP_2
 
                 foreach (char letter in inputText)
                 {
-                    int newIndex = 0;
-                    if (Char.IsUpper(letter))
+                    if (lowerAlphabet.Contains(Char.ToString(letter)) || upperAlphabet.Contains(Char.ToString(letter)))
                     {
-                        newIndex = upperAlphabet.IndexOf(letter) + intKey;
-                        encryptedText += upperAlphabet[newIndex%25];
+                        int newIndex = 0;
+                        if (Char.IsUpper(letter))
+                        {
+                            newIndex = (upperAlphabet.IndexOf(letter) + intKey)%26;
+                            encryptedText += upperAlphabet[newIndex];
+                        }
+                        else
+                        {
+                            newIndex = (lowerAlphabet.IndexOf(letter) + intKey)%26;
+                            encryptedText += lowerAlphabet[newIndex];
+                        }
                     }
                     else
                     {
-                        newIndex = lowerAlphabet.IndexOf(letter) + intKey;
-                        encryptedText += lowerAlphabet[newIndex%25];
+                        if (letter != ' ')
+                        {
+                            MessageBox.Show(
+                                "Warning, your input text contains non-encryptable/non-decryptable or characters");
+                        }
+                        encryptedText += letter;
                     }
                 }
             }
             else
             {
                 //Pop up wrong key
-                MessageBox.Show("Warning: Your key is not correct, you must enter an integer between 1 and 25.");
+                MessageBox.Show("Warning: Your key is not correct, you must enter an integer between -25 and 25.");
                 return inputText;
             }
-
             return encryptedText;
         }
 
@@ -117,8 +129,8 @@ namespace TP_2
         {
             string decryptedText = "";
             int.TryParse(keyAsString, out var key);
-            string oppositeKey = Convert.ToString(key);
-            return $"{Encrypt(inputText, oppositeKey)}";
+            string oppositeKey = Convert.ToString(-key);
+            return Encrypt(inputText, oppositeKey);
         }
     }
     
@@ -140,9 +152,8 @@ namespace TP_2
             }
             catch (FormatException e)
             {
-                MessageBox.Show($"Warning: {e.Message}");
-                return null;
-            }
+                MessageBox.Show($"Warning: {e.Message}\nWe advise you to consult the 'help' page ");
+                return null;            }
         }
 
         private static string Decrypt(string inputText)
@@ -154,9 +165,8 @@ namespace TP_2
             }
             catch (FormatException e)
             {
-                MessageBox.Show($"Warning: {e.Message}");
-                return null;
-            }
+                MessageBox.Show($"Warning: {e.Message}\nWe advise you to consult the 'help' page ");
+                return null;            }
         }
     }
     
@@ -178,25 +188,24 @@ namespace TP_2
             }
             catch (FormatException e)
             {
-                MessageBox.Show($"Warning: {e.Message}");
-                return null;
-            }
+                MessageBox.Show($"Warning: {e.Message}\nWe advise you to consult the 'help' page ");
+                return null;            }
         }
 
         private static string Decrypt(string inputText)
         {
             try
             {
-                string base10Text = Convert.ToInt32(inputText, 16).ToString();
+                string base10Text = Convert.ToInt32(inputText, 2).ToString();
                 return $"{base10Text}";
             }
             catch (FormatException e)
             {
-                MessageBox.Show($"Warning: {e.Message}");
-                return null;
-            }
+                MessageBox.Show($"Warning: {e.Message}\nWe advise you to consult the 'help' page ");
+                return null;            }
         }
     }
+    
     internal static class Vigenere
     {
         public static string Code(string inputText, bool toDecrypt, string key)
@@ -207,25 +216,26 @@ namespace TP_2
         private static string Encrypt(string inputText, string keyAsString)
         {
             string encryptedText = "";
-            string lowerAlphabet = "abcdefghijklmnopqrstuvxyz";
-            string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVXYZ";
+            string lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
+            string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
             int lettersCounter = 0;
             
             foreach (char letter in inputText)
             {
+                int encryptedLetterIndex = 0;
                 if (Char.IsUpper(letter))
                 {
                     int keyIndex = lettersCounter % (keyAsString.Length);
-
+                    
                     if (Char.IsUpper(keyAsString[keyIndex]))
                     {
-                        int encryptedLetterIndex = (upperAlphabet.IndexOf(letter) + upperAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
+                        encryptedLetterIndex = (upperAlphabet.IndexOf(letter) + upperAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
                         encryptedText += upperAlphabet[encryptedLetterIndex];
                     } 
                     else if(!Char.IsUpper(keyAsString[keyIndex]))
                     {
-                        int encryptedLetterIndex = (upperAlphabet.IndexOf(letter) + lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
+                        encryptedLetterIndex = (upperAlphabet.IndexOf(letter) + lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
                         encryptedText += upperAlphabet[encryptedLetterIndex];
                     }
                 }
@@ -234,17 +244,15 @@ namespace TP_2
                     int keyIndex = lettersCounter % (keyAsString.Length);
                     if (Char.IsUpper(keyAsString[keyIndex]))
                     {
-                        int encryptedLetterIndex = (lowerAlphabet.IndexOf(letter) + upperAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
+                        encryptedLetterIndex = (lowerAlphabet.IndexOf(letter) + upperAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
                         encryptedText += lowerAlphabet[encryptedLetterIndex];
                     }
                     else if (!Char.IsUpper(keyAsString[keyIndex]))
                     {
-                        int encryptedLetterIndex =
-                            (lowerAlphabet.IndexOf(letter) + lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
+                        encryptedLetterIndex = (lowerAlphabet.IndexOf(letter) + lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
                         encryptedText += lowerAlphabet[encryptedLetterIndex];
                     }
                 }
-
                 lettersCounter++;
             }
             return encryptedText;
@@ -253,8 +261,8 @@ namespace TP_2
         private static string Decrypt(string inputText, string keyAsString)
         {
             string decryptedText = "";
-            string lowerAlphabet = "abcdefghijklmnopqrstuvxyz";
-            string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVXYZ";
+            string lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
+            string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
             int lettersCounter = 0;
             
@@ -289,11 +297,9 @@ namespace TP_2
                         decryptedText += lowerAlphabet[encryptedLetterIndex];
                     }
                 }
-
                 lettersCounter++;
             }
             return decryptedText;
         }
     }
-    
 }
