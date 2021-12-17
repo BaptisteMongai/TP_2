@@ -52,6 +52,7 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="Vigenere.cs" />
         <Page Include="Help.xaml" />
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
@@ -61,9 +62,12 @@
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Compile Include="Binary.cs" />
+        <Compile Include="Caesar.cs" />
         <Compile Include="Help.xaml.cs">
           <DependentUpon>Help.xaml</DependentUpon>
         </Compile>
+        <Compile Include="Hexedecimal.cs" />
         <Compile Include="Logger.cs" />
         <Compile Include="MainWindow.xaml.cs">
             <DependentUpon>MainWindow.xaml</DependentUpon>

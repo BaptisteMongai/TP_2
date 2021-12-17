@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO.Packaging;
 using System.Windows;
-
+using System.Windows.Controls;
+using System.Linq;
 namespace TP_2
 {
+    
     public partial class MainWindow
     {
         public MainWindow()
         {
             InitializeComponent();
             Logger.Log("Info","Main page start");
-        }
-        
-        private void CaesarSelected(object sender, RoutedEventArgs e)
-        {
-            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -54,282 +50,49 @@ namespace TP_2
                 OutputTextBox.Text = Vigenere.Code(inputText, toDecrypt, inputKey);
             }
         }
+        
+        //https://stackoverflow.com/questions/16966264/what-event-handler-to-use-for-combobox-item-selected-selected-item-not-necessar
+        private bool handle = true;
+        private void ComboBox_DropDownClosed(object sender, EventArgs e) {
+            if(handle)Handle();
+            handle = true;
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            ComboBox cmb = sender as ComboBox;
+            handle = !cmb.IsDropDownOpen;
+            Handle();
+        }
+
+        private void Handle() {
+            switch (EncryptionComboBox.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last())
+            { 
+                case "Caesar":
+                    KeyTextBox.Visibility = Visibility.Visible;
+                    InputTextBox.Clear();
+                    InputTextBox.MaxLength = 5000;
+                    break;
+                case "Binary":
+                    KeyTextBox.Visibility = Visibility.Hidden;
+                    InputTextBox.Clear();
+                    InputTextBox.MaxLength = 30; //31
+                    break;
+                case "Hexadecimal":
+                    KeyTextBox.Visibility = Visibility.Hidden;
+                    InputTextBox.Clear();
+                    InputTextBox.MaxLength = 9; //7
+                    break;
+                case "Vigenere":
+                    KeyTextBox.Visibility = Visibility.Visible;
+                    InputTextBox.Clear();
+                    InputTextBox.MaxLength = 5000;
+                    break;
+            }
+        }
         private void ButtonHelp_Click(object sender, RoutedEventArgs e)
         {
             Help secondWindow = new Help();
             secondWindow.Show();
-        }
-    }
-
-    // This class is not instantiated because it is static. 
-    // You might not be able to do this so easily...
-    // And each class should have its own file !
-    internal static class Caesar
-    {
-        public static string Code(string inputText, bool toDecrypt, string key)
-        {
-            // Ternary operator - Google it
-            return toDecrypt ? $"{Decrypt(inputText, key)} decrypted with Caesar !" : $"{Encrypt(inputText, key)} encrypted with Caesar !";
-        }
-        private static string Encrypt(string inputText, string keyAsString)
-        {
-            Logger.Log("Info","User started to use Caesar encryption");
-
-            string encryptedText = "";
-
-            string lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
-            string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-            if (int.TryParse(keyAsString, out var intKey))
-            {
-                if (intKey%26 == 0)
-                {
-                    Logger.Log("Info","Ceasar encryption done");
-                    return inputText;
-                }
-                else if (intKey < 0)
-                {
-                    intKey = intKey % 26 + 26;
-                }
-                else
-                {
-                    intKey = intKey%26;
-                }
-
-                foreach (char letter in inputText)
-                {
-                    if (lowerAlphabet.Contains(Char.ToString(letter)) || upperAlphabet.Contains(Char.ToString(letter)))
-                    {
-                        int newIndex = 0;
-                        if (Char.IsUpper(letter))
-                        {
-                            newIndex = (upperAlphabet.IndexOf(letter) + intKey)%26;
-                            encryptedText += upperAlphabet[newIndex];
-                        }
-                        else
-                        {
-                            newIndex = (lowerAlphabet.IndexOf(letter) + intKey)%26;
-                            encryptedText += lowerAlphabet[newIndex];
-                        }
-                    }
-                    else
-                    {
-                        if (letter != ' ')
-                        {
-                            MessageBox.Show(
-                                "Warning, your input text contains non-encryptable/non-decryptable or characters");
-                        }
-                        encryptedText += letter;
-                    }
-                }
-            }
-            else
-            {
-                Logger.Log("Warn","Key not correct in Caesar encryption");
-                //Pop up wrong key
-                MessageBox.Show("Warning: Your key is not correct, you must enter an integer between -25 and 25.");
-                return inputText;
-            }
-            Logger.Log("Info","Caesar encryption done");
-            return encryptedText;
-        }
-
-        private static string Decrypt(string inputText, string keyAsString)
-        {
-            Logger.Log("Info","User started to decrypt Caesar Cipher");
-            string decryptedText = "";
-            int.TryParse(keyAsString, out var key);
-            string oppositeKey = Convert.ToString(-key);
-            Logger.Log("Info","Caesar decryption done");
-            return Encrypt(inputText, oppositeKey);
-        }
-    }
-    
-    internal static class Binary
-    {
-        public static string Code(string inputText, bool toDecrypt)
-        {
-            // Ternary operator - Google it
-            return toDecrypt ? Decrypt(inputText) : Encrypt(inputText);
-        }
-
-        private static string Encrypt(string inputText)
-        
-        {
-            Logger.Log("Info","User started to use Binary encryption");
-            try
-            {
-                int base10Text = Int32.Parse(inputText);
-                string binaryText = Convert.ToString(base10Text, 2);
-                Logger.Log("Info","Binary encryption done");
-                return $"{binaryText}";
-            }
-            catch (FormatException e)
-            {
-                Logger.Log("Warn",$"Binary encryption issue: {e.Message}");
-                MessageBox.Show($"Warning: {e.Message}\nWe advise you to consult the 'help' page ");
-                return null;            }
-        }
-
-        private static string Decrypt(string inputText)
-        {
-            Logger.Log("Info","User started to decrypt Binary code");
-            try
-            {
-                string base10Text = Convert.ToInt32(inputText, 2).ToString();
-                Logger.Log("Info","Binary decryption done");
-                return $"{base10Text}";
-            }
-            catch (FormatException e)
-            {
-                Logger.Log("Warn",$"Binary decryption issue: {e.Message}");
-                MessageBox.Show($"Warning: {e.Message}\nWe advise you to consult the 'help' page ");
-                return null;            
-            }
-        }
-    }
-    
-    internal static class Hexadecimal
-    {
-        public static string Code(string inputText, bool toDecrypt)
-        {
-            // Ternary operator - Google it
-            return toDecrypt ? Decrypt(inputText) : Encrypt(inputText);
-        }
-
-        private static string Encrypt(string inputText)
-        {
-            Logger.Log("Info","User started to use Hexadecimal encryption");
-            try
-            {
-                int base10Text = Int32.Parse(inputText);
-                string hexadecimalText = Convert.ToString(base10Text, 16);
-                Logger.Log("Info","Hexadecimal encryption done");
-                return $"{hexadecimalText}";
-            }
-            catch (FormatException e)
-            {
-                Logger.Log("Warn",$"Hexadecimal encryption issue: {e.Message}");
-                MessageBox.Show($"Warning: {e.Message}\nWe advise you to consult the 'help' page ");
-                return null;            }
-        }
-
-        private static string Decrypt(string inputText)
-        {
-            Logger.Log("Info","User started to decrypt Hexadecimal code");
-            try
-            {
-                string base10Text = Convert.ToInt32(inputText, 2).ToString();
-                Logger.Log("Info","Hexadecimal decryption done");
-                return $"{base10Text}";
-            }
-            catch (FormatException e)
-            {
-                Logger.Log("Warn",$"Hexadecimal decryption issue: {e.Message}");
-                MessageBox.Show($"Warning: {e.Message}\nWe advise you to consult the 'help' page ");
-                return null;            }
-        }
-    }
-    
-    internal static class Vigenere
-    {
-        public static string Code(string inputText, bool toDecrypt, string key)
-        {
-            // Ternary operator - Google it
-            return toDecrypt ? $"{Decrypt(inputText, key)} decrypted with Vigenere !" : $"{Encrypt(inputText, key)} encrypted with Vigenere !";
-        }
-        private static string Encrypt(string inputText, string keyAsString)
-        {
-            Logger.Log("Info","User started to use Vigene encryption");
-
-            string encryptedText = "";
-            string lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
-            string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-            int lettersCounter = 0;
-            
-            foreach (char letter in inputText)
-            {
-                int encryptedLetterIndex = 0;
-                if (Char.IsUpper(letter))
-                {
-                    int keyIndex = lettersCounter % (keyAsString.Length);
-                    
-                    if (Char.IsUpper(keyAsString[keyIndex]))
-                    {
-                        encryptedLetterIndex = (upperAlphabet.IndexOf(letter) + upperAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
-                        encryptedText += upperAlphabet[encryptedLetterIndex];
-                    } 
-                    else if(!Char.IsUpper(keyAsString[keyIndex]))
-                    {
-                        encryptedLetterIndex = (upperAlphabet.IndexOf(letter) + lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
-                        encryptedText += upperAlphabet[encryptedLetterIndex];
-                    }
-                }
-                else if(!Char.IsUpper(letter))
-                {
-                    int keyIndex = lettersCounter % (keyAsString.Length);
-                    if (Char.IsUpper(keyAsString[keyIndex]))
-                    {
-                        encryptedLetterIndex = (lowerAlphabet.IndexOf(letter) + upperAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
-                        encryptedText += lowerAlphabet[encryptedLetterIndex];
-                    }
-                    else if (!Char.IsUpper(keyAsString[keyIndex]))
-                    {
-                        encryptedLetterIndex = (lowerAlphabet.IndexOf(letter) + lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 25;
-                        encryptedText += lowerAlphabet[encryptedLetterIndex];
-                    }
-                }
-                lettersCounter++;
-            }
-            Logger.Log("Info","Vigenere encryption done");
-            return encryptedText;
-        }
-
-        private static string Decrypt(string inputText, string keyAsString)
-        {
-            Logger.Log("Info","User started to decrypt Vigenere Cipher");
-            string decryptedText = "";
-            string lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
-            string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-            int lettersCounter = 0;
-            
-            foreach (char letter in inputText)
-            {
-                if (Char.IsUpper(letter))
-                {
-                    int keyIndex = lettersCounter % (keyAsString.Length);
-
-                    if (Char.IsUpper(keyAsString[keyIndex]))
-                    {
-                        int encryptedLetterIndex = (((upperAlphabet.IndexOf(letter) - upperAlphabet.IndexOf(keyAsString[keyIndex])) % 25)+25)%25;
-                        decryptedText += upperAlphabet[encryptedLetterIndex];
-                    } 
-                    else if(!Char.IsUpper(keyAsString[keyIndex]))
-                    {
-                        int encryptedLetterIndex = (((upperAlphabet.IndexOf(letter) - lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 25)+25)%25;
-                        decryptedText += upperAlphabet[encryptedLetterIndex];
-                    }
-                }
-                else if(!Char.IsUpper(letter))
-                {
-                    int keyIndex = lettersCounter % (keyAsString.Length);
-                    if (Char.IsUpper(keyAsString[keyIndex]))
-                    {
-                        int encryptedLetterIndex = (((lowerAlphabet.IndexOf(letter) - upperAlphabet.IndexOf(keyAsString[keyIndex])) % 25)+25)%25;
-                        decryptedText += lowerAlphabet[encryptedLetterIndex];
-                    }
-                    else if (!Char.IsUpper(keyAsString[keyIndex]))
-                    {
-                        int encryptedLetterIndex = (((lowerAlphabet.IndexOf(letter) - lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 25)+25)%25;
-                        decryptedText += lowerAlphabet[encryptedLetterIndex];
-                    }
-                }
-                lettersCounter++;
-            }
-            Logger.Log("Info","Vigenere decryption done");
-            return decryptedText;
         }
     }
 }
