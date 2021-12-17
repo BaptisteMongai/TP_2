@@ -50,18 +50,11 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
-        <Compile Include="Binary.cs">
-          <DependentUpon>MainWindow.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="Hexadecimal.cs">
-          <DependentUpon>MainWindow.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="Logger.cs">
-          <DependentUpon>MainWindow.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="Vigenere.cs">
-          <DependentUpon>MainWindow.xaml</DependentUpon>
-        </Compile>
+        <Compile Include="Resources\Binary.cs" />
+        <Compile Include="Resources\Caesar.cs" />
+        <Compile Include="Resources\Hexadecimal.cs" />
+        <Compile Include="Resources\Logger.cs" />
+        <Compile Include="Resources\Vigenere.cs" />
         <Page Include="Help.xaml" />
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
@@ -70,9 +63,6 @@
         <Compile Include="App.xaml.cs">
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
-        </Compile>
-        <Compile Include="Caesar.cs">
-          <DependentUpon>MainWindow.xaml</DependentUpon>
         </Compile>
         <Compile Include="Help.xaml.cs">
           <DependentUpon>Help.xaml</DependentUpon>
