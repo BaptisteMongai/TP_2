@@ -60,7 +60,7 @@
                         <Run>The </Run> <Bold Foreground="Red">VIGENERE cypher</Bold> is a method of encrypting alphabetic text by using a series of interwoven Caesar ciphers, 
                         based on the letters of a <Italic><Bold>Keyword</Bold></Italic>. It employs a form of polyalphabetic substitution.<LineBreak/>
                         To decrypt a text we use <Hyperlink RequestNavigate="Hyperlink_RequestNavigate" NavigateUri="https://www.apprendre-en-ligne.net/crypto/vigenere/carrevig.html">The Vinagère square</Hyperlink><LineBreak/>
-                        <Underline>Example :</Underline>
+                        <Underline>Example :</Underline> If Keyword = "caesarsquare"; "Vigenère Cipher" -> "Xikwnvju Wiglgr"
                     </TextBlock>
                 </BulletDecorator>
             </Grid>
