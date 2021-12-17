@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO.Packaging;
 using System.Windows;
 
@@ -9,8 +10,9 @@ namespace TP_2
         public MainWindow()
         {
             InitializeComponent();
+            Logger.Log("Info","Main page start");
         }
-
+        
         private void CaesarSelected(object sender, RoutedEventArgs e)
         {
             
@@ -25,8 +27,6 @@ namespace TP_2
             var inputText = InputTextBox.Text;
             var encryptionmethod = EncryptionComboBox.Text;
             var inputKey = KeyTextBox.Text;
-
-            
             
             if (toDecrypt)
             {
@@ -44,6 +44,10 @@ namespace TP_2
             if (encryptionmethod == "Binary")
             {
                 OutputTextBox.Text = Binary.Code(inputText, toDecrypt);
+            }
+            if (encryptionmethod == "Hexadecimal")
+            {
+                OutputTextBox.Text = Hexadecimal.Code(inputText, toDecrypt);
             }
             if (encryptionmethod == "Vigenere")
             {
@@ -69,6 +73,8 @@ namespace TP_2
         }
         private static string Encrypt(string inputText, string keyAsString)
         {
+            Logger.Log("Info","User started to use Caesar encryption");
+
             string encryptedText = "";
 
             string lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -78,6 +84,7 @@ namespace TP_2
             {
                 if (intKey%26 == 0)
                 {
+                    Logger.Log("Info","Ceasar encryption done");
                     return inputText;
                 }
                 else if (intKey < 0)
@@ -118,18 +125,22 @@ namespace TP_2
             }
             else
             {
+                Logger.Log("Warn","Key not correct in Caesar encryption");
                 //Pop up wrong key
                 MessageBox.Show("Warning: Your key is not correct, you must enter an integer between -25 and 25.");
                 return inputText;
             }
+            Logger.Log("Info","Caesar encryption done");
             return encryptedText;
         }
 
         private static string Decrypt(string inputText, string keyAsString)
         {
+            Logger.Log("Info","User started to decrypt Caesar Cipher");
             string decryptedText = "";
             int.TryParse(keyAsString, out var key);
             string oppositeKey = Convert.ToString(-key);
+            Logger.Log("Info","Caesar decryption done");
             return Encrypt(inputText, oppositeKey);
         }
     }
@@ -143,30 +154,38 @@ namespace TP_2
         }
 
         private static string Encrypt(string inputText)
+        
         {
+            Logger.Log("Info","User started to use Binary encryption");
             try
             {
                 int base10Text = Int32.Parse(inputText);
                 string binaryText = Convert.ToString(base10Text, 2);
+                Logger.Log("Info","Binary encryption done");
                 return $"{binaryText}";
             }
             catch (FormatException e)
             {
+                Logger.Log("Warn",$"Binary encryption issue: {e.Message}");
                 MessageBox.Show($"Warning: {e.Message}\nWe advise you to consult the 'help' page ");
                 return null;            }
         }
 
         private static string Decrypt(string inputText)
         {
+            Logger.Log("Info","User started to decrypt Binary code");
             try
             {
                 string base10Text = Convert.ToInt32(inputText, 2).ToString();
+                Logger.Log("Info","Binary decryption done");
                 return $"{base10Text}";
             }
             catch (FormatException e)
             {
+                Logger.Log("Warn",$"Binary decryption issue: {e.Message}");
                 MessageBox.Show($"Warning: {e.Message}\nWe advise you to consult the 'help' page ");
-                return null;            }
+                return null;            
+            }
         }
     }
     
@@ -180,27 +199,33 @@ namespace TP_2
 
         private static string Encrypt(string inputText)
         {
+            Logger.Log("Info","User started to use Hexadecimal encryption");
             try
             {
                 int base10Text = Int32.Parse(inputText);
                 string hexadecimalText = Convert.ToString(base10Text, 16);
+                Logger.Log("Info","Hexadecimal encryption done");
                 return $"{hexadecimalText}";
             }
             catch (FormatException e)
             {
+                Logger.Log("Warn",$"Hexadecimal encryption issue: {e.Message}");
                 MessageBox.Show($"Warning: {e.Message}\nWe advise you to consult the 'help' page ");
                 return null;            }
         }
 
         private static string Decrypt(string inputText)
         {
+            Logger.Log("Info","User started to decrypt Hexadecimal code");
             try
             {
                 string base10Text = Convert.ToInt32(inputText, 2).ToString();
+                Logger.Log("Info","Hexadecimal decryption done");
                 return $"{base10Text}";
             }
             catch (FormatException e)
             {
+                Logger.Log("Warn",$"Hexadecimal decryption issue: {e.Message}");
                 MessageBox.Show($"Warning: {e.Message}\nWe advise you to consult the 'help' page ");
                 return null;            }
         }
@@ -215,6 +240,8 @@ namespace TP_2
         }
         private static string Encrypt(string inputText, string keyAsString)
         {
+            Logger.Log("Info","User started to use Vigene encryption");
+
             string encryptedText = "";
             string lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
             string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -255,11 +282,13 @@ namespace TP_2
                 }
                 lettersCounter++;
             }
+            Logger.Log("Info","Vigenere encryption done");
             return encryptedText;
         }
 
         private static string Decrypt(string inputText, string keyAsString)
         {
+            Logger.Log("Info","User started to decrypt Vigenere Cipher");
             string decryptedText = "";
             string lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
             string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -299,6 +328,7 @@ namespace TP_2
                 }
                 lettersCounter++;
             }
+            Logger.Log("Info","Vigenere decryption done");
             return decryptedText;
         }
     }

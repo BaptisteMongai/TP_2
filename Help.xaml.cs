@@ -8,6 +8,8 @@ namespace TP_2
         public Help()
         {
             InitializeComponent();
+            Logger.Log("Info","Help page start");
+
         }
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
