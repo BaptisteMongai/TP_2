@@ -56,6 +56,9 @@
         <Compile Include="Hexadecimal.cs">
           <DependentUpon>MainWindow.xaml</DependentUpon>
         </Compile>
+        <Compile Include="Logger.cs">
+          <DependentUpon>MainWindow.xaml</DependentUpon>
+        </Compile>
         <Compile Include="Vigenere.cs">
           <DependentUpon>MainWindow.xaml</DependentUpon>
         </Compile>
@@ -95,6 +98,7 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config" />
+        <None Include="Properties\Application.config" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

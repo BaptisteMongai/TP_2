@@ -11,6 +11,8 @@ namespace TP_2
         }
         private static string Encrypt(string inputText, string keyAsString)
         {
+            Logger.Log("Info","User started to use Vigene encryption");
+            
             string encryptedText = "";
             string lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
             string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -59,11 +61,13 @@ namespace TP_2
                 }
                 lettersCounter++;
             }
+            Logger.Log("Info","Vigenere encryption done");
             return encryptedText;
         }
 
         private static string Decrypt(string inputText, string keyAsString)
         {
+            Logger.Log("Info","User started to decrypt Vigenere Cipher");
             string decryptedText = "";
             string lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
             string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -84,7 +88,8 @@ namespace TP_2
                         {
                             encryptedLetterIndex =
                                 (((upperAlphabet.IndexOf(letter) - upperAlphabet.IndexOf(keyAsString[keyIndex])) % 26) +
-                                 26) % 26;
+                                 26) % 26; // (x%26 + 26)%26 allows to obtain a key between 0 and 25 whatever the size
+                                           // and the sign of x.
                             decryptedText += upperAlphabet[encryptedLetterIndex];
                         }
                         else if (!Char.IsUpper(keyAsString[keyIndex]))
@@ -119,6 +124,7 @@ namespace TP_2
                 }
                 lettersCounter++;
             }
+            Logger.Log("Info","Vigenere decryption done");
             return decryptedText;
         }
     }

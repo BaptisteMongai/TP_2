@@ -11,6 +11,8 @@ namespace TP_2
         }
         private static string Encrypt(string inputText, string keyAsString)
         {
+            Logger.Log("Info","User started to use Caesar encryption");
+            
             string encryptedText = "";
 
             string lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -20,6 +22,7 @@ namespace TP_2
             {
                 if (intKey%26 == 0)
                 {
+                    Logger.Log("Info","Ceasar encryption done");
                     return inputText;
                 }
                 else if (intKey < 0)
@@ -60,18 +63,22 @@ namespace TP_2
             }
             else
             {
+                Logger.Log("Warn","Key not correct in Caesar encryption");
                 //Pop up wrong key
                 MessageBox.Show("Warning: Your key is not correct, you must enter an integer between -25 and 25.");
                 return inputText;
             }
+            Logger.Log("Info","Caesar encryption done");
             return encryptedText;
         }
 
         private static string Decrypt(string inputText, string keyAsString)
         {
+            Logger.Log("Info","User started to decrypt Caesar Cipher");
             string decryptedText = "";
             int.TryParse(keyAsString, out var key);
             string oppositeKey = Convert.ToString(-key);
+            Logger.Log("Info","Caesar decryption done");
             return Encrypt(inputText, oppositeKey);
         }
     }

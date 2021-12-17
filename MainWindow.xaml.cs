@@ -11,6 +11,7 @@ namespace TP_2
         public MainWindow()
         {
             InitializeComponent();
+            Logger.Log("Info","Main page start");
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -68,15 +69,23 @@ namespace TP_2
             { 
                 case "Caesar":
                     KeyTextBox.Visibility = Visibility.Visible;
+                    InputTextBox.Clear();
+                    InputTextBox.MaxLength = 15;
                     break;
                 case "Binary":
                     KeyTextBox.Visibility = Visibility.Hidden;
+                    InputTextBox.Clear();
+                    InputTextBox.MaxLength = 9;
                     break;
                 case "Hexadecimal":
                     KeyTextBox.Visibility = Visibility.Hidden;
+                    InputTextBox.Clear();
+                    InputTextBox.MaxLength = 9;
                     break;
                 case "Vigenere":
                     KeyTextBox.Visibility = Visibility.Visible;
+                    InputTextBox.Clear();
+                    InputTextBox.MaxLength = 15;
                     break;
             }
         }
