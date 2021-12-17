@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO.Packaging;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,6 +34,12 @@ namespace TP_2
                 OutputTextBox.Text = $"{inputText} was written as an input to be encrypted using {encryptionmethod}";
             }
 
+            if (encryptionmethod == "> ")
+            {
+                OutputTextBox.Text = "No encryption or decryption has been done.";
+                Logger.Log("Warn","User did not chose an encryption method");
+                MessageBox.Show("Warning, please chose an encryption method with the combobox.");
+            }
             if (encryptionmethod == "Caesar")
             {
                 OutputTextBox.Text = Caesar.Code(inputText, toDecrypt, inputKey);
@@ -70,22 +77,36 @@ namespace TP_2
                 case "Caesar":
                     KeyTextBox.Visibility = Visibility.Visible;
                     InputTextBox.Clear();
-                    InputTextBox.MaxLength = 15;
+                    InputTextBox.MaxLength = 5000;
                     break;
                 case "Binary":
                     KeyTextBox.Visibility = Visibility.Hidden;
                     InputTextBox.Clear();
-                    InputTextBox.MaxLength = 9;
+                    if (ConvertCheckBox.IsChecked ?? false)
+                    {
+                        InputTextBox.MaxLength = 31;
+                    }
+                    else
+                    {
+                        InputTextBox.MaxLength = 9;
+                    }
                     break;
                 case "Hexadecimal":
                     KeyTextBox.Visibility = Visibility.Hidden;
                     InputTextBox.Clear();
-                    InputTextBox.MaxLength = 9;
+                    if (ConvertCheckBox.IsChecked ?? false)
+                    {
+                        InputTextBox.MaxLength = 7;
+                    }
+                    else
+                    {
+                        InputTextBox.MaxLength = 9;
+                    }
                     break;
                 case "Vigenere":
                     KeyTextBox.Visibility = Visibility.Visible;
                     InputTextBox.Clear();
-                    InputTextBox.MaxLength = 15;
+                    InputTextBox.MaxLength = 5000;
                     break;
             }
         }
@@ -93,6 +114,47 @@ namespace TP_2
         {
             Help secondWindow = new Help();
             secondWindow.Show();
+        }
+
+        private void CheckBox_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            switch (EncryptionComboBox.SelectedItem.ToString().Split(new string[] { ": " }, StringSplitOptions.None).Last())
+            { 
+                case "Caesar":
+                    KeyTextBox.Visibility = Visibility.Visible;
+                    InputTextBox.Clear();
+                    InputTextBox.MaxLength = 5000;
+                    break;
+                case "Binary":
+                    KeyTextBox.Visibility = Visibility.Hidden;
+                    InputTextBox.Clear();
+                    if (ConvertCheckBox.IsChecked ?? false)
+                    {
+                        InputTextBox.MaxLength = 31;
+                    }
+                    else
+                    {
+                        InputTextBox.MaxLength = 9;
+                    }
+                    break;
+                case "Hexadecimal":
+                    KeyTextBox.Visibility = Visibility.Hidden;
+                    InputTextBox.Clear();
+                    if (ConvertCheckBox.IsChecked ?? false)
+                    {
+                        InputTextBox.MaxLength = 7;
+                    }
+                    else
+                    {
+                        InputTextBox.MaxLength = 9;
+                    }
+                    break;
+                case "Vigenere":
+                    KeyTextBox.Visibility = Visibility.Visible;
+                    InputTextBox.Clear();
+                    InputTextBox.MaxLength = 5000;
+                    break;
+            }
         }
     }
 }

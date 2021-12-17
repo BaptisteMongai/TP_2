@@ -35,7 +35,7 @@
                 </ComboBox>
                 
                 <TextBox Name="KeyTextBox" Text="Key" Height="25" Grid.Column="1" TextWrapping="Wrap" AcceptsReturn="False" VerticalScrollBarVisibility="Auto"/>
-                <CheckBox Name="ConvertCheckBox" Content="Decrypt the code" Grid.Column="2" Height="25" HorizontalAlignment="Center" Margin="5,10"/>
+                <CheckBox Click="CheckBox_SelectionChanged" Name="ConvertCheckBox" Content="Decrypt the code" Grid.Column="2" Height="25" HorizontalAlignment="Center" Margin="5,10"/>
                 <Button Click="Button_Click" Content="(De)code text !!!" Grid.Column="3" Height="25" Width="150" HorizontalAlignment="Center"/>
             </Grid>
             <Grid Height="20" Margin="12,0,12,0">

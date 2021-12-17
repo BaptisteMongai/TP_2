@@ -7,11 +7,18 @@ namespace TP_2
         public static string Code(string inputText, bool toDecrypt, string key)
         {
             // Ternary operator - Google it
-            return toDecrypt ? $"{Decrypt(inputText, key)} decrypted with Vigenere !" : $"{Encrypt(inputText, key)} encrypted with Vigenere !";
+            return toDecrypt ? Decrypt(inputText, key) : Encrypt(inputText, key);
         }
         private static string Encrypt(string inputText, string keyAsString)
         {
-            Logger.Log("Info","User started to use Vigene encryption");
+            Logger.Log("Info","User started to use Vigenere encryption");
+            
+            Checker checker = new Checker();
+            checker.checkVigenereInput(inputText);
+            if (!checker.checkVigenereKey(keyAsString))
+            {
+                return inputText;
+            }
             
             string encryptedText = "";
             string lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -22,37 +29,44 @@ namespace TP_2
             {
                 int encryptedLetterIndex = 0;
                 int keyIndex = lettersCounter % (keyAsString.Length);
-                if (lowerAlphabet.Contains(Char.ToString(keyAsString[keyIndex])) || upperAlphabet.Contains(Char.ToString(keyAsString[keyIndex])))
+                if (lowerAlphabet.Contains(Char.ToString(letter)) || upperAlphabet.Contains(Char.ToString(letter)))
                 {
-                    if (Char.IsUpper(letter))
+                    if (lowerAlphabet.Contains(Char.ToString(keyAsString[keyIndex])) || upperAlphabet.Contains(Char.ToString(keyAsString[keyIndex])))
                     {
-                        if (Char.IsUpper(keyAsString[keyIndex]))
+                        if (Char.IsUpper(letter))
                         {
-                            encryptedLetterIndex =
-                                (upperAlphabet.IndexOf(letter) + upperAlphabet.IndexOf(keyAsString[keyIndex])) % 26;
-                            encryptedText += upperAlphabet[encryptedLetterIndex];
+                            if (Char.IsUpper(keyAsString[keyIndex]))
+                            {
+                                encryptedLetterIndex =
+                                    (upperAlphabet.IndexOf(letter) + upperAlphabet.IndexOf(keyAsString[keyIndex])) % 26;
+                                encryptedText += upperAlphabet[encryptedLetterIndex];
+                            }
+                            else if (!Char.IsUpper(keyAsString[keyIndex]))
+                            {
+                                encryptedLetterIndex =
+                                    (upperAlphabet.IndexOf(letter) + lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 26;
+                                encryptedText += upperAlphabet[encryptedLetterIndex];
+                            }
                         }
-                        else if (!Char.IsUpper(keyAsString[keyIndex]))
+                        else if (!Char.IsUpper(letter))
                         {
-                            encryptedLetterIndex =
-                                (upperAlphabet.IndexOf(letter) + lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 26;
-                            encryptedText += upperAlphabet[encryptedLetterIndex];
+                            if (Char.IsUpper(keyAsString[keyIndex]))
+                            {
+                                encryptedLetterIndex =
+                                    (lowerAlphabet.IndexOf(letter) + upperAlphabet.IndexOf(keyAsString[keyIndex])) % 26;
+                                encryptedText += lowerAlphabet[encryptedLetterIndex];
+                            }
+                            else if (!Char.IsUpper(keyAsString[keyIndex]))
+                            {
+                                encryptedLetterIndex =
+                                    (lowerAlphabet.IndexOf(letter) + lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 26;
+                                encryptedText += lowerAlphabet[encryptedLetterIndex];
+                            }
                         }
                     }
-                    else if (!Char.IsUpper(letter))
+                    else
                     {
-                        if (Char.IsUpper(keyAsString[keyIndex]))
-                        {
-                            encryptedLetterIndex =
-                                (lowerAlphabet.IndexOf(letter) + upperAlphabet.IndexOf(keyAsString[keyIndex])) % 26;
-                            encryptedText += lowerAlphabet[encryptedLetterIndex];
-                        }
-                        else if (!Char.IsUpper(keyAsString[keyIndex]))
-                        {
-                            encryptedLetterIndex =
-                                (lowerAlphabet.IndexOf(letter) + lowerAlphabet.IndexOf(keyAsString[keyIndex])) % 26;
-                            encryptedText += lowerAlphabet[encryptedLetterIndex];
-                        }
+                        encryptedText += letter;
                     }
                 }
                 else
@@ -68,19 +82,26 @@ namespace TP_2
         private static string Decrypt(string inputText, string keyAsString)
         {
             Logger.Log("Info","User started to decrypt Vigenere Cipher");
+            
+            Checker checker = new Checker();
+            checker.checkVigenereInput(inputText);
+            if (!checker.checkVigenereKey(keyAsString))
+            {
+                return inputText;
+            }
+            
             string decryptedText = "";
             string lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
             string upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
             int lettersCounter = 0;
-            
             foreach (char letter in inputText)
             {
                 int encryptedLetterIndex = 0;
                 int keyIndex = lettersCounter % (keyAsString.Length);
                 
-                if (lowerAlphabet.Contains(Char.ToString(keyAsString[keyIndex])) ||
-                    upperAlphabet.Contains(Char.ToString(keyAsString[keyIndex])))
+                if (lowerAlphabet.Contains(Char.ToString(letter)) ||
+                    upperAlphabet.Contains(Char.ToString(letter)))
                 {
                     if (Char.IsUpper(letter))
                     {

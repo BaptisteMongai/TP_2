@@ -52,6 +52,7 @@
         </ApplicationDefinition>
         <Compile Include="Resources\Binary.cs" />
         <Compile Include="Resources\Caesar.cs" />
+        <Compile Include="Resources\Checker.cs" />
         <Compile Include="Resources\Hexadecimal.cs" />
         <Compile Include="Resources\Logger.cs" />
         <Compile Include="Resources\Vigenere.cs" />
